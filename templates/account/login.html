@@ -1,0 +1,70 @@
+{% extends "_base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% load widget_tweaks %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+  {% get_providers as socialaccount_providers %}
+  
+  <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    
+    <h2 class="text-2xl font-bold mb-6 text-start text-gray-700 ml-2">{{ 'Sign in to your account' }}</h2>
+    <form class="max-w-sm mx-auto" method="POST" action="{% url 'account_login' %}">
+      
+      {% if form.errors %}
+        <div class="bg-red-500 text-white px-6 py-4 mb-4 rounded-md">
+          {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% csrf_token %}
+      <div class="mb-6">
+        <label for="{{ form.login.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.login.label }}</label>
+        {{ form.login|add_class:"w-full py-2.5 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" }}
+        {% if form.login.errors %}
+          <div class="text-red-500 text-xs mt-1">{{ form.login.errors.0 }}</div>
+        {% endif %}
+      </div>
+      <div class="mb-6">
+        <label for="{{ form.password.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.password.label }}</label>
+        {{ form.password|add_class:"w-full py-2.5 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" }}
+        {% if form.password.errors %}
+          <div class="text-red-500 text-xs mt-1">{{ form.password.errors.0 }}</div>
+        {% endif %}
+      </div>
+      <div class="flex items-start mb-6">
+        {{ form.remember|add_class:"w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" }}
+        <label for="{{ form.remember.id_for_label }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.remember.label }}</label>
+      </div>
+      <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="submit">{{ 'Sign In' }}</button>
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <a class="block mt-4 text-sm font-medium text-gray-900 dark:text-gray-300" href="{% url 'account_reset_password' %}">{{ 'Forgot Password?' }}</a>
+      <p><div class="flex-start text-start">{{ "Don't have an account?"  }} 
+        <strong><a class="underline" href="{{ signup_url }}">{{ 'Sign Up' }}</a> </strong></a></div></p>
+      {% if socialaccount_providers %}
+      <div class="mt-6 flex justify-center space-x-3">
+        {% for provider in socialaccount_providers %}
+          <a href="{% provider_login_url provider.id process='signup' %}" class="inline-flex items-center p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            {% if provider.id == "google" %}
+              <i class="fab fa-google text-red-600 text-2xl"></i>
+            {% elif provider.id == "microsoft" %}
+              <i class="fab fa-microsoft text-blue-500 text-2xl"></i>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+      
+    {% endif %}
+  </form>
+    </div>
+  {% endblock %}
+
