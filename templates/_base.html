@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" />
     <!-- <script src="{% static 'htmx.min.js' %}" defer></script> -->
     {% django_htmx_script %}
+    <script src="{% static 'js/htmx.js' %}" defer></script>
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
-    <script src="https://unpkg.com/htmx.org@1.7.1"></script>
     {% endcompress %}
 
 </head>
@@ -44,7 +44,7 @@
                   <a href="{% url 'detail' request.user.username %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
               </li>
               <li>
-                  <a href="{% url 'account_login' %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</a>
+                  <a href="{% url 'account_logout' %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</a>
               </li>
           {% else %}
               <li>
@@ -65,7 +65,10 @@
         {% block content %}
         {% endblock content %}
     </div>
-
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+          event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        }) </script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
 </body>
 

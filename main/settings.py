@@ -87,7 +87,10 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_LOGIN_ON_SIGNUP = False
-
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGIN_REDIRECT_URL = '/'
+ACCOUNT_PROFILE_ON_AUTH = False
+LOGIN_REDIRECT_URL = '/'
 # ACCOUNT_USERNAME_REQUIRED = False
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

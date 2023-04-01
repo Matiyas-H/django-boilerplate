@@ -1,6 +1,12 @@
 from django import forms
 from allauth.account.forms import SignupForm
+from .models import User
 
+
+class UserProfile(forms.Form):
+    class Meta:
+        model = User
+        fields = "__all__"
 
 class CustomSignupForm(SignupForm):
     def __init__(self, *args, **kwargs):
